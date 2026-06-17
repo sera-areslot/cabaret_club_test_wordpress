@@ -1,0 +1,46 @@
+name: Deploy design preview to GitHub Pages
+
+# 一時的なデザインプレビュー公開用ワークフロー。
+# 本番サイト（WordPress 単体構成）とは無関係です。不要になれば本ファイルと
+# リポジトリ設定の Pages を無効化すれば停止できます。
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "design-preview/**"
+      - ".github/workflows/deploy-preview.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Upload design-preview as Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: design-preview
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,65 +1,40 @@
 <?php
 /**
- * Phase 1 動作確認用のスタブ。
- * 登録済みコンテンツ（キャスト・お知らせ・求人）が CMS から取得できることを示します。
- * Phase 2 で design-preview のデザインに沿った本テンプレートへ置き換えます。
+ * Generic fallback (blog index / search / taxonomy など).
  *
  * @package lumiere
  */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-
 get_header();
 ?>
-<main class="lumiere-stub">
-	<p class="lumiere-stub__eyebrow">CLUB LUMIÈRE</p>
-	<h1>コンテンツ基盤 稼働中（Phase 1）</h1>
-	<p>キャスト・お知らせ・求人のカスタム投稿タイプが有効です。下記は CMS から読み出したサンプルです。<br>
-	デザイン（白×淡ピンク×ゴールド）の本テンプレート化は <strong>Phase 2</strong> で行います。
-	現在のデザイン確認は <code>/design-preview/</code> をご覧ください。</p>
+<div class="page-hero">
+	<div class="page-hero__bg"></div>
+	<p class="page-hero__en"><?php echo is_search() ? 'Search' : 'Archive'; ?></p>
+	<p class="page-hero__ja"><?php echo esc_html( is_search() ? sprintf( '「%s」の検索結果', get_search_query() ) : wp_strip_all_tags( get_the_archive_title() ) ); ?></p>
+</div>
 
-	<?php
-	$sections = array(
-		'cast'    => 'キャスト',
-		'news'    => 'お知らせ',
-		'recruit' => '求人',
-	);
+<div class="content">
+	<?php if ( have_posts() ) : ?>
+		<ul class="news__list">
+			<?php
+			while ( have_posts() ) :
+				the_post();
+				?>
+				<li class="news__item">
+					<a href="<?php the_permalink(); ?>">
+						<span class="news__date"><?php echo esc_html( get_the_date( 'Y.m.d' ) ); ?></span>
+						<span class="news__cat">&nbsp;</span>
+						<span class="news__title"><?php the_title(); ?></span>
+					</a>
+				</li>
+			<?php endwhile; ?>
+		</ul>
+	<?php else : ?>
+		<p class="empty-note">表示できる記事がありません。</p>
+	<?php endif; ?>
+</div>
 
-	foreach ( $sections as $post_type => $label ) :
-		$query = new WP_Query( array(
-			'post_type'      => $post_type,
-			'posts_per_page' => 10,
-			'orderby'        => ( 'news' === $post_type ) ? 'date' : 'menu_order',
-			'order'          => ( 'news' === $post_type ) ? 'DESC' : 'ASC',
-		) );
-		?>
-		<h2><?php echo esc_html( $label ); ?></h2>
-		<?php if ( $query->have_posts() ) : ?>
-			<ul>
-				<?php
-				while ( $query->have_posts() ) :
-					$query->the_post();
-					$extra = '';
-					if ( 'cast' === $post_type ) {
-						$romaji = get_post_meta( get_the_ID(), '_lumiere_romaji', true );
-						$height = get_post_meta( get_the_ID(), '_lumiere_height', true );
-						$extra  = trim( $romaji . ( $height ? " / T{$height}" : '' ) );
-					} elseif ( 'recruit' === $post_type ) {
-						$extra = get_post_meta( get_the_ID(), '_lumiere_employment', true );
-					}
-					?>
-					<li>
-						<?php the_title(); ?>
-						<?php if ( $extra ) : ?><span style="color:#b0894e;"> — <?php echo esc_html( $extra ); ?></span><?php endif; ?>
-					</li>
-				<?php endwhile; ?>
-			</ul>
-		<?php else : ?>
-			<p style="color:#999;">（まだ登録がありません）</p>
-		<?php endif; ?>
-		<?php wp_reset_postdata(); ?>
-	<?php endforeach; ?>
-</main>
-<?php
-get_footer();
+<?php the_posts_pagination( array( 'mid_size' => 1, 'prev_text' => '前へ', 'next_text' => '次へ' ) ); ?>
+<?php get_footer(); ?>

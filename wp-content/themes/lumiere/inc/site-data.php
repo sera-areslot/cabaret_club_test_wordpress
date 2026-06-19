@@ -2,8 +2,9 @@
 /**
  * サイト共通データ（店舗情報・料金・コンセプト等）。
  *
- * 現状はここで一元管理。Phase 後半で管理画面（設定ページ）化できるよう
- * `lumiere_site_data` フィルターで上書き可能にしています。
+ * 既定値は lumiere_site_defaults() に定義し、管理画面「LUMIÈRE 設定」
+ * （inc/settings.php）で保存された値で上書きします。さらに
+ * `lumiere_site_data` フィルターでも上書き可能です。
  *
  * @package lumiere
  */
@@ -13,10 +14,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * 既定値。
+ *
  * @return array
  */
-function lumiere_site() {
-	return apply_filters( 'lumiere_site_data', array(
+function lumiere_site_defaults() {
+	return array(
 		'wordmark'     => 'LUMIÈRE',
 		'area'         => '大阪・北新地',
 		'hero_ja'      => '夜を、芸術に。',
@@ -52,5 +55,77 @@ function lumiere_site() {
 			'X'         => '#',
 			'LINE'      => '#',
 		),
-	) );
+	);
+}
+
+/**
+ * 既定値に管理画面の保存値を反映したサイトデータ。
+ *
+ * @return array
+ */
+function lumiere_site() {
+	$d = lumiere_site_defaults();
+	$o = get_option( 'lumiere_settings', array() );
+
+	if ( is_array( $o ) && ! empty( $o ) ) {
+		// 単一テキスト項目。
+		foreach ( array( 'wordmark', 'area', 'hero_ja', 'hero_lead', 'concept_lead', 'recruit_lead', 'recruit_text', 'system_note' ) as $k ) {
+			if ( isset( $o[ $k ] ) && '' !== $o[ $k ] ) {
+				$d[ $k ] = $o[ $k ];
+			}
+		}
+
+		// 店舗情報。
+		$store_map = array(
+			'店名'     => 'store_name',
+			'住所'     => 'store_address',
+			'電話'     => 'store_tel',
+			'営業時間' => 'store_hours',
+			'定休日'   => 'store_holiday',
+		);
+		foreach ( $store_map as $label => $key ) {
+			if ( isset( $o[ $key ] ) && '' !== $o[ $key ] ) {
+				$d['store'][ $label ] = $o[ $key ];
+			}
+		}
+
+		// SNS。
+		$sns_map = array( 'Instagram' => 'sns_instagram', 'X' => 'sns_x', 'LINE' => 'sns_line' );
+		foreach ( $sns_map as $label => $key ) {
+			if ( isset( $o[ $key ] ) && '' !== $o[ $key ] ) {
+				$d['sns'][ $label ] = $o[ $key ];
+			}
+		}
+
+		// コンセプト本文（空行区切りで段落化）。
+		if ( ! empty( $o['concept_text'] ) ) {
+			$paras = preg_split( '/\n\s*\n/u', trim( $o['concept_text'] ) );
+			$paras = array_values( array_filter( array_map( 'trim', $paras ) ) );
+			if ( $paras ) {
+				$d['concept_text'] = $paras;
+			}
+		}
+
+		// 料金（1行＝「項目 | 補足 | 金額」）。
+		if ( ! empty( $o['system'] ) ) {
+			$rows = array();
+			foreach ( preg_split( '/\r\n|\r|\n/', trim( $o['system'] ) ) as $line ) {
+				$line = trim( $line );
+				if ( '' === $line ) {
+					continue;
+				}
+				$parts  = array_map( 'trim', explode( '|', $line ) );
+				$rows[] = array(
+					'name'  => isset( $parts[0] ) ? $parts[0] : '',
+					'note'  => isset( $parts[1] ) ? $parts[1] : '',
+					'price' => isset( $parts[2] ) ? (int) preg_replace( '/[^0-9]/', '', $parts[2] ) : 0,
+				);
+			}
+			if ( $rows ) {
+				$d['system'] = $rows;
+			}
+		}
+	}
+
+	return apply_filters( 'lumiere_site_data', $d );
 }

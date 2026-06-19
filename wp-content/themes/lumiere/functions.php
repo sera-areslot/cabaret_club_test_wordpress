@@ -12,6 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'LUMIERE_THEME_VER', '0.2.0' );
 
 require_once get_template_directory() . '/inc/site-data.php';
+require_once get_template_directory() . '/inc/settings.php';
 require_once get_template_directory() . '/inc/cleanup.php';
 require_once get_template_directory() . '/inc/seo.php';
 

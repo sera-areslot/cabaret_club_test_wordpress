@@ -69,9 +69,7 @@ $nav = array(
 		<p><?php echo esc_html( $site['store']['住所'] ); ?></p>
 		<p>OPEN <?php echo esc_html( $site['store']['営業時間'] ); ?> ／ <?php echo esc_html( $site['store']['定休日'] ); ?>定休</p>
 		<p class="overlay__links">
-			<?php foreach ( $site['sns'] as $name => $url ) : ?>
-				<a href="<?php echo esc_url( $url ); ?>"><?php echo esc_html( $name ); ?></a>
-			<?php endforeach; ?>
+			<?php foreach ( $site['sns'] as $name => $url ) { echo lumiere_sns_link( $name, $url ); } // phpcs:ignore WordPress.Security.EscapeOutput ?>
 		</p>
 	</div>
 </div>

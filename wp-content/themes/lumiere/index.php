@@ -25,7 +25,6 @@ get_header();
 				<li class="news__item">
 					<a href="<?php the_permalink(); ?>">
 						<span class="news__date"><?php echo esc_html( get_the_date( 'Y.m.d' ) ); ?></span>
-						<span class="news__cat">&nbsp;</span>
 						<span class="news__title"><?php the_title(); ?></span>
 					</a>
 				</li>

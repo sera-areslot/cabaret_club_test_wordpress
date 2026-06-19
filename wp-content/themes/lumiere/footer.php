@@ -26,11 +26,9 @@ $foot_nav = array( 'concept' => 'Concept', 'cast' => 'Cast', 'system' => 'System
 			<?php endforeach; ?>
 		</nav>
 		<p class="footer__sns">
-			<?php foreach ( $site['sns'] as $name => $url ) : ?>
-				<a href="<?php echo esc_url( $url ); ?>"><?php echo esc_html( $name ); ?></a>
-			<?php endforeach; ?>
+			<?php foreach ( $site['sns'] as $name => $url ) { echo lumiere_sns_link( $name, $url ); } // phpcs:ignore WordPress.Security.EscapeOutput ?>
 		</p>
-		<p class="footer__copy">&copy; <?php echo esc_html( date( 'Y' ) ); ?> CLUB LUMIÈRE — placeholder content.</p>
+		<p class="footer__copy">&copy; <?php echo esc_html( date( 'Y' ) ); ?> CLUB LUMIÈRE</p>
 	</div>
 </footer>
 <?php wp_footer(); ?>

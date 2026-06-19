@@ -69,12 +69,12 @@ $site = lumiere_site();
 					wp_reset_postdata();
 				else :
 					?>
-					<p style="padding-inline:var(--pad-x);color:var(--ink-dim);">キャスト情報は準備中です。</p>
+					<p class="cast__empty">キャスト情報は準備中です。</p>
 				<?php endif; ?>
 			</div>
 		</div>
-		<div class="container" style="margin-top:2.4rem;">
-			<a class="link-underline" href="<?php echo esc_url( get_post_type_archive_link( 'cast' ) ); ?>">キャスト一覧を見る</a>
+		<div class="container list-more">
+			<a class="link-underline" href="<?php echo esc_url( get_post_type_archive_link( 'cast' ) ); ?>">キャスト一覧を見る<?php echo lumiere_icon( 'arrow', 'link-underline__arrow' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></a>
 		</div>
 	</section>
 
@@ -121,8 +121,8 @@ $site = lumiere_site();
 					<li class="empty-note">お知らせは準備中です。</li>
 				<?php endif; ?>
 			</ul>
-			<div style="margin-top:1.6rem;">
-				<a class="link-underline" href="<?php echo esc_url( get_post_type_archive_link( 'news' ) ); ?>">お知らせ一覧を見る</a>
+			<div class="list-more">
+				<a class="link-underline" href="<?php echo esc_url( get_post_type_archive_link( 'news' ) ); ?>">お知らせ一覧を見る<?php echo lumiere_icon( 'arrow', 'link-underline__arrow' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></a>
 			</div>
 		</div>
 	</section>
@@ -136,7 +136,7 @@ $site = lumiere_site();
 			<h2 class="recruit__title" data-split>Recruit</h2>
 			<p class="recruit__sub" data-reveal>採用情報</p>
 			<p class="recruit__text" data-reveal><?php echo esc_html( $site['recruit_text'] ); ?></p>
-			<a class="link-underline" href="<?php echo esc_url( get_post_type_archive_link( 'recruit' ) ); ?>" data-reveal>採用情報を見る</a>
+			<a class="link-underline" href="<?php echo esc_url( get_post_type_archive_link( 'recruit' ) ); ?>" data-reveal>採用情報を見る<?php echo lumiere_icon( 'arrow', 'link-underline__arrow' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></a>
 		</div>
 	</section>
 
@@ -154,7 +154,10 @@ $site = lumiere_site();
 						<div><dt><?php echo esc_html( $label ); ?></dt><dd><?php echo esc_html( $value ); ?></dd></div>
 					<?php endforeach; ?>
 				</dl>
-				<div class="access__map" data-reveal aria-hidden="true"><span>MAP</span></div>
+				<a class="access__map" href="<?php echo esc_url( 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode( $site['store']['住所'] ) ); ?>" target="_blank" rel="noopener" data-reveal>
+						<?php echo lumiere_icon( 'pin' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+						<span>Google マップで見る</span>
+					</a>
 			</div>
 		</div>
 	</section>

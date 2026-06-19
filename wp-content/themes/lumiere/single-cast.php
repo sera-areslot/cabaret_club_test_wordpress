@@ -36,13 +36,15 @@ while ( have_posts() ) :
 
 			<?php if ( ! empty( $m['instagram'] ) || ! empty( $m['x'] ) ) : ?>
 				<div class="cast-sns">
-					<?php if ( ! empty( $m['instagram'] ) ) { printf( '<a href="%s" target="_blank" rel="noopener">Instagram</a>', esc_url( $m['instagram'] ) ); } ?>
-					<?php if ( ! empty( $m['x'] ) ) { printf( '<a href="%s" target="_blank" rel="noopener">X</a>', esc_url( $m['x'] ) ); } ?>
+					<?php
+					if ( ! empty( $m['instagram'] ) ) { echo lumiere_sns_link( 'Instagram', $m['instagram'] ); } // phpcs:ignore WordPress.Security.EscapeOutput
+					if ( ! empty( $m['x'] ) ) { echo lumiere_sns_link( 'X', $m['x'] ); } // phpcs:ignore WordPress.Security.EscapeOutput
+					?>
 				</div>
 			<?php endif; ?>
 
-			<div style="margin-top:2.5rem;">
-				<a class="link-underline" href="<?php echo esc_url( get_post_type_archive_link( 'cast' ) ); ?>">キャスト一覧へ戻る</a>
+			<div class="list-more">
+				<a class="link-underline link-underline--back" href="<?php echo esc_url( get_post_type_archive_link( 'cast' ) ); ?>"><?php echo lumiere_icon( 'arrow-left', 'link-underline__arrow' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>キャスト一覧へ戻る</a>
 			</div>
 		</div>
 	</article>

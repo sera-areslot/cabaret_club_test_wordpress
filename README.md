@@ -122,3 +122,9 @@ scripts/                        setup.sh / seed.sh
 > 注: 本リポジトリを作成したセッションの実行環境は外部レジストリへの接続が制限されており、
 > Docker イメージ取得が不可のため**起動確認はお手元のローカルで行ってください**
 > （PHP 構文チェック `php -l` は実施済みです）。
+
+---
+
+## 本番公開（Phase 5）
+
+本番のレンタルサーバー（PHP + MySQL）への公開手順・本番チューニング（キャッシュ／.htaccess／wp-config／SSL／ドメイン）は **[DEPLOY.md](./DEPLOY.md)** にまとめています。本番へ反映するのはテーマ `wp-content/themes/lumiere/` とプラグイン `wp-content/plugins/lumiere-core/` の2点のみです。

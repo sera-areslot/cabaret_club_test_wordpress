@@ -12,6 +12,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'LUMIERE_THEME_VER', '0.2.0' );
 
 require_once get_template_directory() . '/inc/site-data.php';
+require_once get_template_directory() . '/inc/cleanup.php';
+require_once get_template_directory() . '/inc/seo.php';
 
 /**
  * テーマの基本サポート。
@@ -45,11 +47,12 @@ add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style( 'lumiere-style', get_stylesheet_uri(), array( 'lumiere-fonts' ), LUMIERE_THEME_VER );
 	wp_enqueue_style( 'lumiere-theme', get_theme_file_uri( 'assets/css/theme.css' ), array( 'lumiere-style' ), LUMIERE_THEME_VER );
 
-	// アニメーションライブラリ（CDN）。
-	wp_enqueue_script( 'gsap', 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js', array(), null, true );
-	wp_enqueue_script( 'gsap-scrolltrigger', 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js', array( 'gsap' ), null, true );
-	wp_enqueue_script( 'lenis', 'https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js', array(), null, true );
-	wp_enqueue_script( 'lumiere-main', get_theme_file_uri( 'assets/js/main.js' ), array( 'gsap', 'gsap-scrolltrigger', 'lenis' ), LUMIERE_THEME_VER, true );
+	// アニメーションライブラリ（CDN）。defer で読み込みを最適化。
+	$script_args = array( 'in_footer' => true, 'strategy' => 'defer' );
+	wp_enqueue_script( 'gsap', 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js', array(), null, $script_args );
+	wp_enqueue_script( 'gsap-scrolltrigger', 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js', array( 'gsap' ), null, $script_args );
+	wp_enqueue_script( 'lenis', 'https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js', array(), null, $script_args );
+	wp_enqueue_script( 'lumiere-main', get_theme_file_uri( 'assets/js/main.js' ), array( 'gsap', 'gsap-scrolltrigger', 'lenis' ), LUMIERE_THEME_VER, $script_args );
 } );
 
 /**

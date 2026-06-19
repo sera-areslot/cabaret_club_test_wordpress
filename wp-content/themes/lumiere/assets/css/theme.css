@@ -277,3 +277,8 @@ body.admin-bar .nav{top:32px;}
   .hero__scroll i::after{animation:none;}
   *{scroll-behavior:auto!important;}
 }
+
+/* Accessibility */
+.screen-reader-text{border:0;clip:rect(1px,1px,1px,1px);clip-path:inset(50%);height:1px;width:1px;margin:-1px;padding:0;overflow:hidden;position:absolute!important;word-wrap:normal!important;}
+.screen-reader-text:focus{background:var(--ink);color:#fff;clip:auto!important;clip-path:none;display:block;height:auto;width:auto;left:8px;top:8px;padding:.7em 1.2em;font-size:.85rem;line-height:normal;z-index:300;text-decoration:none;}
+:focus-visible{outline:2px solid var(--gold-deep);outline-offset:3px;}

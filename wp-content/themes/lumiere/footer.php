@@ -15,6 +15,8 @@ $anchor   = function ( $id ) use ( $on_front ) {
 };
 $foot_nav = array( 'concept' => 'Concept', 'cast' => 'Cast', 'system' => 'System', 'news' => 'News', 'recruit' => 'Recruit', 'access' => 'Access' );
 ?>
+</main>
+
 <footer class="footer">
 	<div class="container footer__inner">
 		<a class="footer__brand" href="<?php echo esc_url( home_url( '/' ) ); ?>">CLUB LUMIÈRE</a>

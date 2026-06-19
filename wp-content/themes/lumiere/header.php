@@ -34,6 +34,7 @@ $nav = array(
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
+<a class="skip-link screen-reader-text" href="#main">本文へスキップ</a>
 
 <div class="loader" id="loader" aria-hidden="true">
 	<div class="loader__inner">
@@ -74,3 +75,5 @@ $nav = array(
 		</p>
 	</div>
 </div>
+
+<main id="main" class="site-main">

@@ -11,7 +11,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 get_header();
 $site = lumiere_site();
 ?>
-<main id="top">
 
 	<!-- Hero -->
 	<section class="hero" id="hero">
@@ -160,6 +159,5 @@ $site = lumiere_site();
 		</div>
 	</section>
 
-</main>
 <?php
 get_footer();

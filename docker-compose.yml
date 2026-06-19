@@ -1,0 +1,66 @@
+# CLUB LUMIÈRE — local WordPress (development)
+#
+# 使い方:
+#   cp .env.example .env
+#   bash scripts/setup.sh          # 初回: 起動 + WordPressインストール + 有効化 + サンプル投入
+#   → http://localhost:8080/        （サイト）
+#   → http://localhost:8080/wp-admin（管理画面 / 既定 admin / admin）
+#
+# 停止: docker compose down        破棄(DBごと): docker compose down -v
+
+services:
+  db:
+    image: mariadb:11
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: ${DB_NAME:-lumiere}
+      MARIADB_USER: ${DB_USER:-lumiere}
+      MARIADB_PASSWORD: ${DB_PASSWORD:-lumiere}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpass}
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  wordpress:
+    image: wordpress:php8.3-apache
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "${WP_PORT:-8080}:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: ${DB_NAME:-lumiere}
+      WORDPRESS_DB_USER: ${DB_USER:-lumiere}
+      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD:-lumiere}
+      WORDPRESS_DEBUG: ${WP_DEBUG:-1}
+    volumes:
+      - wp_data:/var/www/html
+      - ./wp-content/plugins/lumiere-core:/var/www/html/wp-content/plugins/lumiere-core
+      - ./wp-content/themes/lumiere:/var/www/html/wp-content/themes/lumiere
+
+  # On-demand WP-CLI (used by scripts/setup.sh and scripts/seed.sh)
+  wpcli:
+    image: wordpress:cli-php8.3
+    user: "33:33"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: ${DB_NAME:-lumiere}
+      WORDPRESS_DB_USER: ${DB_USER:-lumiere}
+      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD:-lumiere}
+    volumes:
+      - wp_data:/var/www/html
+      - ./wp-content/plugins/lumiere-core:/var/www/html/wp-content/plugins/lumiere-core
+      - ./wp-content/themes/lumiere:/var/www/html/wp-content/themes/lumiere
+
+volumes:
+  db_data:
+  wp_data:

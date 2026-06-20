@@ -30,6 +30,21 @@ add_action( 'admin_menu', function () {
 	);
 } );
 
+// 設定ページでのみメディアアップローダ用スクリプトを読み込む。
+add_action( 'admin_enqueue_scripts', function ( $hook ) {
+	if ( 'toplevel_page_lumiere-settings' !== $hook ) {
+		return;
+	}
+	wp_enqueue_media();
+	wp_enqueue_script(
+		'lumiere-admin-settings',
+		get_theme_file_uri( 'assets/js/admin-settings.js' ),
+		array( 'jquery' ),
+		defined( 'LUMIERE_THEME_VER' ) ? LUMIERE_THEME_VER : false,
+		true
+	);
+} );
+
 /**
  * 入力値のサニタイズ。
  *
@@ -60,6 +75,11 @@ function lumiere_sanitize_settings( $input ) {
 			$out[ $k ] = esc_url_raw( trim( $input[ $k ] ) );
 		}
 	}
+
+	if ( isset( $input['hero_image'] ) ) {
+		$out['hero_image'] = esc_url_raw( trim( $input['hero_image'] ) );
+	}
+	$out['hero_light'] = ! empty( $input['hero_light'] ) ? '1' : '';
 
 	return $out;
 }
@@ -127,6 +147,29 @@ function lumiere_render_settings_page() {
 				$text_row( 'area', 'エリア表記', $d['area'] );
 				$text_row( 'hero_ja', '和文キャッチ', $d['hero_ja'] );
 				$text_row( 'hero_lead', 'リード文', $d['hero_lead'] );
+
+				$hero_img = isset( $o['hero_image'] ) ? $o['hero_image'] : '';
+				?>
+				<tr>
+					<th scope="row"><label for="ls_hero_image">ヒーロー背景画像</label></th>
+					<td>
+						<img id="lumiere-hero-image-preview" src="<?php echo esc_url( $hero_img ); ?>" alt="" style="<?php echo $hero_img ? '' : 'display:none;'; ?>max-width:320px;height:auto;margin-bottom:.6rem;border:1px solid #ccd0d4;">
+						<input type="hidden" id="ls_hero_image" name="lumiere_settings[hero_image]" value="<?php echo esc_attr( $hero_img ); ?>">
+						<p>
+							<button type="button" class="button" id="lumiere-hero-image-select">画像を選択</button>
+							<button type="button" class="button" id="lumiere-hero-image-remove">削除</button>
+						</p>
+						<p class="description">未設定の場合は淡いボケの仮画像を表示します。推奨は横長（例: 1600×1000px 以上）。</p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">ヒーロー文字色</th>
+					<td>
+						<label><input type="checkbox" name="lumiere_settings[hero_light]" value="1" <?php checked( ! empty( $o['hero_light'] ) ); ?>> 文字を明色にする（暗い写真向け）</label>
+						<p class="description">暗い写真を背景にする場合にオン。文字が白系になり、下部に暗いグラデーションが入ります。</p>
+					</td>
+				</tr>
+				<?php
 				?>
 			</table>
 

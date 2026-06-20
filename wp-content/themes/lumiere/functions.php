@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'LUMIERE_THEME_VER', '0.3.0' );
+define( 'LUMIERE_THEME_VER', '0.4.0' );
 
 require_once get_template_directory() . '/inc/site-data.php';
 require_once get_template_directory() . '/inc/icons.php';

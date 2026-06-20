@@ -13,7 +13,12 @@ $site = lumiere_site();
 ?>
 
 	<!-- Hero -->
-	<section class="hero" id="hero">
+	<?php
+	$hero_class = 'hero';
+	if ( ! empty( $site['hero_image'] ) ) { $hero_class .= ' hero--has-image'; }
+	if ( ! empty( $site['hero_light'] ) ) { $hero_class .= ' hero--light'; }
+	?>
+	<section class="<?php echo esc_attr( $hero_class ); ?>" id="hero"<?php if ( ! empty( $site['hero_image'] ) ) { printf( ' style="--hero-img:url(%s)"', esc_url( $site['hero_image'] ) ); } ?>>
 		<div class="hero__bg"><div class="hero__bg-inner"></div></div>
 		<div class="hero__veil"></div>
 		<div class="hero__inner">

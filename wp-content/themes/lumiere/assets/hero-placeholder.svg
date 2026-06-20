@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" role="img" aria-label="">
+  <defs>
+    <linearGradient id="base" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#fdf7f4"/>
+      <stop offset="0.55" stop-color="#f7ece9"/>
+      <stop offset="1" stop-color="#f2dee1"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.75"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="bokehGold" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#e9c987" stop-opacity="0.55"/>
+      <stop offset="0.7" stop-color="#d9b46a" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#d9b46a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="bokehPink" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#eab7bd" stop-opacity="0.5"/>
+      <stop offset="0.7" stop-color="#e3a9b1" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#e3a9b1" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vignette" cx="0.5" cy="0.4" r="0.78">
+      <stop offset="0.55" stop-color="#7a5a36" stop-opacity="0"/>
+      <stop offset="1" stop-color="#7a5a36" stop-opacity="0.14"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1600" height="1000" fill="url(#base)"/>
+  <ellipse cx="1120" cy="180" rx="900" ry="620" fill="url(#glow)"/>
+
+  <circle cx="1180" cy="240" r="230" fill="url(#bokehGold)"/>
+  <circle cx="300" cy="820" r="280" fill="url(#bokehGold)"/>
+  <circle cx="560" cy="240" r="150" fill="url(#bokehPink)"/>
+  <circle cx="1340" cy="640" r="180" fill="url(#bokehPink)"/>
+  <circle cx="820" cy="520" r="120" fill="url(#bokehGold)"/>
+  <circle cx="980" cy="800" r="90" fill="url(#bokehPink)"/>
+  <circle cx="150" cy="360" r="70" fill="url(#bokehGold)"/>
+  <circle cx="1480" cy="300" r="60" fill="url(#bokehPink)"/>
+  <circle cx="700" cy="900" r="50" fill="url(#bokehGold)"/>
+
+  <rect width="1600" height="1000" fill="url(#vignette)"/>
+</svg>

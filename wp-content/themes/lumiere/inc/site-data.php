@@ -24,6 +24,8 @@ function lumiere_site_defaults() {
 		'area'         => '大阪・北新地',
 		'hero_ja'      => '夜を、芸術に。',
 		'hero_lead'    => '一夜の記憶を、最上の美と静けさで満たす。',
+		'hero_image'   => get_theme_file_uri( 'assets/hero-placeholder.svg' ),
+		'hero_light'   => false,
 
 		'concept_lead' => '静謐な高揚。',
 		'concept_text' => array(
@@ -96,6 +98,12 @@ function lumiere_site() {
 				$d['sns'][ $label ] = $o[ $key ];
 			}
 		}
+
+		// ヒーロー背景画像・文字色。
+		if ( ! empty( $o['hero_image'] ) ) {
+			$d['hero_image'] = $o['hero_image'];
+		}
+		$d['hero_light'] = ! empty( $o['hero_light'] );
 
 		// コンセプト本文（空行区切りで段落化）。
 		if ( ! empty( $o['concept_text'] ) ) {
